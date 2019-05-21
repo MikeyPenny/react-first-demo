@@ -1,0 +1,10 @@
+.card {
+    background-color: #202536;
+    color: white;
+    height: 300px;
+    font-family: "Montserrat";
+    width: 200px;
+    border-radius: 25px;
+    margin: 2%; 
+    text-align: center;
+}
