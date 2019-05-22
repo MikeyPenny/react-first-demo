@@ -1,5 +1,5 @@
 import React from "react"
-import "./layout.css"
+import "./heroContainer.css"
 
 function Layout(props) {
     return (

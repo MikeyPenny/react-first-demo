@@ -8,13 +8,15 @@ import Article from "../components/Article"
 import HeroContainer from "../layout/HeroContainer"
 import Card from "../components/Card"
 import students from "../students.json"
+import FlexContainer from "../layout/FlexContainer"
 
 class App extends React.Component {
-
 
   constructor(props){
     super(props)
     this.handleSearchHandler = this.handleSearchHandler.bind(this)
+    this.disco = this.disco.bind(this)
+    this.stopDisco = this.stopDisco.bind(this)
   }
 
   state = {
@@ -25,13 +27,29 @@ class App extends React.Component {
     backgroundColor: "white",
     firstname: "",
     lastname: "",
-    email: ""
+    email: "",
+    discoRef: 0,
+    disco: false
   }
 
   handleSearchHandler = (e)=> {
     this.setState({searchQuery: e.target.value}, ()=> {
       this.search()
     })
+  }
+
+  disco() {
+    let discoRef = setInterval(()=> {
+        this.handleColorClick()
+    }, 500)  
+
+    this.setState({discoRef, disco: !this.state.disco})
+  }
+
+  stopDisco() {
+    clearInterval(this.state.discoRef)
+    this.setState({disco: !this.state.disco})
+
   }
 
   search = ()=> {
@@ -81,30 +99,41 @@ class App extends React.Component {
     />)
 
     let appStyle = {
-      "backgroundColor": this.state.backgroundColor
+      "backgroundColor": this.state.backgroundColor,
+      "padding": "5%"
     }
 
     return (
       <div style={appStyle}>
-        <button onClick={this.handleColorClick}>Change color</button>
-        <button onClick={this.handleCounterClick}>Click me</button>
-        <h1>Count: {this.state.count}</h1>
+        <FlexContainer>
+          <button onClick={this.handleColorClick}>Change color</button>
+          <button onClick={this.handleCounterClick}>Click me</button>
+          {this.state.disco? 
+            <button onClick={this.stopDisco}>Stop Disco</button>:
+            <button onClick={this.disco}>Disco</button> 
+          }
+
+          <input type="text" value={this.state.searchQuery} onChange={this.handleSearchHandler} placeholder="search"/>
+        </FlexContainer>
+        <FlexContainer>
+          <h1>Count: {this.state.count}</h1>
+        </FlexContainer>
         <HeroContainer>
-            <input type="text" value={this.state.searchQuery} onChange={this.handleSearchHandler} placeholder="search"/>
-            
-            <input value={this.state.firstname} 
-                  onChange={this.handleInputChange} 
-                  type="text" name="firstname" placeholder="firstname"
-            />
-            <input value={this.state.lastname} 
-                  onChange={this.handleInputChange} 
-                  type="text" name="lastname" placeholder="lastname"
-            />
-            <input value={this.state.email} 
-                  onChange={this.handleInputChange} 
-                  type="text" name="email" placeholder="email"
-            />
-            <button onClick={this.handleAddContactClick}>Add contact</button>
+            <FlexContainer>
+              <input value={this.state.firstname} 
+                    onChange={this.handleInputChange} 
+                    type="text" name="firstname" placeholder="firstname"
+              />
+              <input value={this.state.lastname} 
+                    onChange={this.handleInputChange} 
+                    type="text" name="lastname" placeholder="lastname"
+              />
+              <input value={this.state.email} 
+                    onChange={this.handleInputChange} 
+                    type="text" name="email" placeholder="email"
+              />
+              <button onClick={this.handleAddContactClick}>Add contact</button>
+            </FlexContainer>
             {studentJSX}
         </HeroContainer>
       </div>
